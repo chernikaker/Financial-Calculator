@@ -13,12 +13,19 @@ public class BigDecimalParser {
 
     public  BigDecimal parse(String input) {
 
+
         input = input.trim();
         String regex = "^[0-9\\s.,-]*$";
 
         if(! input.matches(regex)) throw new IllegalArgumentException("Invalid input");
-        if(input.contains(" ")) spaces = true;
-        if(input.contains(",")) comma = true;
+        if(input.contains(" ")) {
+            spaces = true;
+        }
+        else spaces = false;
+        if(input.contains(",")) {
+            comma = true;
+        }
+        else comma = false;
         String cleanedInput = input.replaceAll("\\s+", "").replace(",", ".");
       //  cleanedInput = cleanedInput.replaceAll("(\\.\\d*[^0])0+$", "$1");
         BigDecimal d = new BigDecimal(cleanedInput);
