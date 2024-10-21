@@ -16,7 +16,7 @@ public class Counter {
         if(b.compareTo(MAX_VALUE)>0 || b.compareTo(MIN_VALUE)<0) {
             throw new IllegalArgumentException("Number 2 is out of range");
         }
-        BigDecimal result = a.add(b).stripTrailingZeros();
+        BigDecimal result = a.add(b);
         if(result.compareTo(MAX_VALUE)>0 || result.compareTo(MIN_VALUE)<0) {
             throw new ArithmeticException("Resut is out of range");
         }
@@ -31,7 +31,7 @@ public class Counter {
         if(b.compareTo(MAX_VALUE)>0 || b.compareTo(MIN_VALUE)<0) {
             throw new IllegalArgumentException("Number 2 is out of range");
         }
-        BigDecimal result = a.subtract(b).stripTrailingZeros();
+        BigDecimal result = a.subtract(b);
         if(result.compareTo(MAX_VALUE)>0 || result.compareTo(MIN_VALUE)<0) {
             throw new ArithmeticException("Resut is out of range");
         }

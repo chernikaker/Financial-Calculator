@@ -20,7 +20,7 @@ public class BigDecimalParser {
         if(input.contains(" ")) spaces = true;
         if(input.contains(",")) comma = true;
         String cleanedInput = input.replaceAll("\\s+", "").replace(",", ".");
-        cleanedInput = cleanedInput.replaceAll("(\\.\\d*[^0])0+$", "$1");
+      //  cleanedInput = cleanedInput.replaceAll("(\\.\\d*[^0])0+$", "$1");
         BigDecimal d = new BigDecimal(cleanedInput);
 
         return new BigDecimal(cleanedInput);
