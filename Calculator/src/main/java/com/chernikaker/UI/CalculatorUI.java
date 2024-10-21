@@ -82,7 +82,13 @@ public class CalculatorUI {
             gbc.gridwidth = 2;
             frame.add(resultField, gbc);
 
-            JLabel labelInfo = new JLabel("<html>Allowed number formats:<br>1000.0  &nbsp;1000,0  &nbsp;1 000.0  &nbsp;1 000,0</html>");
+            JLabel labelInfo = new JLabel("""
+                    <html><div style='text-align: center;'>
+                    <b>Allowed number formats</b>:
+                    <br>1000.0  &nbsp;1000,0  &nbsp;1 000.0  &nbsp;1 000,0<br>
+                    <b>WARNING:</b> no e-notation numbers<br><br>
+                     <b>Allowed range of inputs and result</b><br>
+                      [-1 000 000 000 000.000000; 1 000 000 000 000.000000] </div></html>""");
 
             labelInfo.setFont(new Font("Arial", Font.PLAIN, 14));
             labelInfo.setForeground(new Color(163, 163, 163)); // Серый цвет шрифта
@@ -137,8 +143,12 @@ public class CalculatorUI {
 
                         // Display the result
                         resultField.setText(p.toString(result));
-                    } catch (InvalidAttributeValueException exep){
+                    }
+                    catch (InvalidAttributeValueException exep){
                         JOptionPane.showMessageDialog(frame, "Numbers must have the same input format", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    catch (IllegalArgumentException| ArithmeticException ex){
+                        JOptionPane.showMessageDialog(frame, ex.getMessage(), "Input Error", JOptionPane.ERROR_MESSAGE);
                     }
                     catch (Exception ex) {
                         JOptionPane.showMessageDialog(frame, "Please enter valid numbers.\n Allowed formats:\n 1000.0\n1000,0\n1 000.0\n1 000,0", "Input Error", JOptionPane.ERROR_MESSAGE);
