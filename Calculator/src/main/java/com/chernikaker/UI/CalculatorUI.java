@@ -1,9 +1,14 @@
 package com.chernikaker.UI;
 
+import com.chernikaker.logic.BigDecimalParser;
+import com.chernikaker.logic.Counter;
+
+import javax.management.InvalidAttributeValueException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
 public class CalculatorUI {
 
@@ -13,6 +18,9 @@ public class CalculatorUI {
         private JComboBox<String> operationBox;
         private JButton calculateButton;
         private JTextField resultField;
+
+        private final BigDecimalParser p = new BigDecimalParser();
+        private final Counter counter = new Counter();
 
         public CalculatorUI() {
             frame = new JFrame("Financial Calculator");
@@ -74,6 +82,19 @@ public class CalculatorUI {
             gbc.gridwidth = 2;
             frame.add(resultField, gbc);
 
+            JLabel labelInfo = new JLabel("<html>Allowed number formats:<br>1000.0  &nbsp;1000,0  &nbsp;1 000.0  &nbsp;1 000,0</html>");
+
+            labelInfo.setFont(new Font("Arial", Font.PLAIN, 14));
+            labelInfo.setForeground(new Color(163, 163, 163)); // Серый цвет шрифта
+            labelInfo.setHorizontalAlignment(JLabel.CENTER);
+            labelInfo.setVerticalAlignment(JLabel.BOTTOM);
+           // labelInfo.setHorizontalTextPosition(SwingConstants.LEFT);
+
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            gbc.gridwidth = 6;
+            gbc.insets = new Insets(30, 10, 0, 0);
+            frame.add(labelInfo, gbc);
 
             JLabel label = new JLabel("Шрубок Анна Владимировна. КТС 3 курс 11 группа, 2024");
 
@@ -85,9 +106,9 @@ public class CalculatorUI {
             label.setHorizontalTextPosition(SwingConstants.CENTER);
 
             gbc.gridx = 0;
-            gbc.gridy = 2;
+            gbc.gridy = 3;
             gbc.gridwidth = 6;
-            gbc.insets = new Insets(90, 0, 0, 0);
+            gbc.insets = new Insets(30, 0, 0, 0);
             frame.add(label, gbc);
 
             // Add action listener for the button
@@ -95,22 +116,32 @@ public class CalculatorUI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        double num1 = Double.parseDouble(input1.getText());
-                        double num2 = Double.parseDouble(input2.getText());
-                        String operation = (String) operationBox.getSelectedItem();
-                        double result;
+                        BigDecimal n1 = p.parse(input1.getText());
+                        boolean commas1 = p.isComma();
+                        boolean spaces1 = p.isSpaces();
 
+                        BigDecimal n2 = p.parse(input2.getText());
+                       boolean commas2 = p.isComma();
+                       boolean spaces2 = p.isSpaces();
+                       if(commas1!=commas2||spaces1!=spaces2){
+                           throw new InvalidAttributeValueException();
+                       }
+                        String operation = (String) operationBox.getSelectedItem();
+                        BigDecimal result;
                         // Perform the selected operation
                         if ("+".equals(operation)) {
-                            result = num1 + num2;
+                            result = counter.add(n1,n2);
                         } else {
-                            result = num1 - num2;
+                            result = counter.subtract(n1,n2);
                         }
 
                         // Display the result
-                        resultField.setText(String.valueOf(result));
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(frame, "Please enter valid numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                        resultField.setText(p.toString(result));
+                    } catch (InvalidAttributeValueException exep){
+                        JOptionPane.showMessageDialog(frame, "Numbers must have the same input format", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    catch (Exception ex) {
+                        JOptionPane.showMessageDialog(frame, "Please enter valid numbers.\n Allowed formats:\n 1000.0\n1000,0\n1 000.0\n1 000,0", "Input Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
