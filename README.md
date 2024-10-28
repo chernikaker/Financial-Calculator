@@ -9,4 +9,4 @@ Supports various number formats, such as:
 * 1 000 000,000000
 
 ## Installation
-To use calculator download calculator.exe file from latest release and run it.
+To use calculator download .exe file from latest release and run it.
