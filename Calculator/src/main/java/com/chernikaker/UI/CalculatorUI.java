@@ -47,7 +47,7 @@ public class CalculatorUI {
             input2 = createRoundedTextField();
 
             // Create dropdown for operations
-            String[] operations = {"+", "-"};
+            String[] operations = {"+", "-","*","/"};
             operationBox = new JComboBox<>(operations);
             styleComboBox(operationBox);
 
@@ -123,31 +123,29 @@ public class CalculatorUI {
                 public void actionPerformed(ActionEvent e) {
                     try {
                         BigDecimal n1 = p.parse(input1.getText());
-                        boolean commas1 = p.isComma();
-                        boolean spaces1 = p.isSpaces();
-
                         BigDecimal n2 = p.parse(input2.getText());
-                       boolean commas2 = p.isComma();
-                       boolean spaces2 = p.isSpaces();
-                       if(commas1!=commas2||spaces1!=spaces2){
-                           throw new InvalidAttributeValueException();
-                       }
                         String operation = (String) operationBox.getSelectedItem();
                         BigDecimal result;
                         // Perform the selected operation
                         if ("+".equals(operation)) {
                             result = counter.add(n1,n2);
-                        } else {
+                        } else if ("-".equals(operation))  {
                             result = counter.subtract(n1,n2);
+                        }
+                        else if ("*".equals(operation))  {
+                            result = counter.multiply(n1,n2);
+                        }
+                        else {
+                            result = counter.divide(n1,n2);
                         }
 
                         // Display the result
                         resultField.setText(p.toString(result));
                     }
-                    catch (InvalidAttributeValueException exep){
-                        JOptionPane.showMessageDialog(frame, "Numbers must have the same input format", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    catch (ArithmeticException ex){
+                        JOptionPane.showMessageDialog(frame, ex.getMessage(), "Arithmetic Error", JOptionPane.ERROR_MESSAGE);
                     }
-                    catch (IllegalArgumentException| ArithmeticException ex){
+                    catch (IllegalArgumentException ex){
                         JOptionPane.showMessageDialog(frame, ex.getMessage(), "Input Error", JOptionPane.ERROR_MESSAGE);
                     }
                     catch (Exception ex) {

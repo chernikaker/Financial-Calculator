@@ -2,56 +2,45 @@ package com.chernikaker.logic;
 
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class BigDecimalParser {
 
-    boolean comma = false;
-    boolean spaces = false;
-    private static BigDecimal MAX_VALUE = new BigDecimal("1000000000000.000000");
-    private static BigDecimal MIN_VALUE = new BigDecimal("1000000000000.000000");
 
     public  BigDecimal parse(String input) {
 
-
         input = input.trim();
         String regex = "^[0-9\\s.,-]*$";
-
-        if(! input.matches(regex)) throw new IllegalArgumentException("Invalid input");
-        if(input.contains(" ")) {
-            spaces = true;
-        }
-        else spaces = false;
-        if(input.contains(",")) {
-            comma = true;
-        }
-        else comma = false;
-        String cleanedInput = input.replaceAll("\\s+", "").replace(",", ".");
-      //  cleanedInput = cleanedInput.replaceAll("(\\.\\d*[^0])0+$", "$1");
-        BigDecimal d = new BigDecimal(cleanedInput);
+        if(! input.matches(regex)) throw new IllegalArgumentException("Invalid characters in input");
+        if(input.indexOf('-') != -1 && input.indexOf('-') != 0) throw new IllegalArgumentException("Invalid input: - character can be only before the number");
+        String cleanedInput = input.replace(",", ".");
+        if(input.contains(" ")) checkSpacedInput(cleanedInput);
+        cleanedInput = cleanedInput.replaceAll(" ","");
 
         return new BigDecimal(cleanedInput);
     }
 
     public String toString(BigDecimal num) {
+        num = num.setScale(6, RoundingMode.HALF_UP);
+        num = num.stripTrailingZeros();
         String numString = num.toPlainString();
-        int startIndex = numString.indexOf(".")-3;
-        if(comma)  numString = numString.replace(".", ",");
+        int pointIndex =  numString.indexOf(".")-3;
+        int startIndex = pointIndex== -4 ? numString.length()-3 : pointIndex;
         StringBuilder sb = new StringBuilder(numString);
-        if(spaces) {
-            while (startIndex > 0) {
-                sb.insert(startIndex, " ");
+        while (startIndex > 0) {
+                if (sb.charAt(startIndex-1)!='-') sb.insert(startIndex, " ");
                 startIndex-=3;
-            }
         }
         return sb.toString();
     }
 
-    public boolean isComma() {
-        return comma;
-    }
+    public void checkSpacedInput(String input) {
+        input = input.trim();
 
-    public boolean isSpaces() {
-        return spaces;
+        String regex = "^-?(\\d{1,3})( \\d{3})*([.,])?(\\d+)?$";
+        if(!input.matches(regex))
+            throw new IllegalArgumentException("Invalid input in format 1 000.000000");
+
     }
 }
