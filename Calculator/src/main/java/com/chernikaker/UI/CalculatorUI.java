@@ -88,7 +88,9 @@ public class CalculatorUI {
                     <br>1000.0  &nbsp;1000,0  &nbsp;1 000.0  &nbsp;1 000,0<br>
                     <b>WARNING:</b> no e-notation numbers<br><br>
                      <b>Allowed range of inputs and result</b><br>
-                      [-1 000 000 000 000.000000; 1 000 000 000 000.000000] </div></html>""");
+                      [-1 000 000 000 000.000000; 1 000 000 000 000.000000]<br><br>
+                      <b>NOTE:</b> The result will be rounded to 6 decimal places, and trailing zeros will be removed.<br></div>
+                      </html>""");
 
             labelInfo.setFont(new Font("Arial", Font.PLAIN, 14));
             labelInfo.setForeground(new Color(163, 163, 163)); // Серый цвет шрифта
