@@ -3,69 +3,49 @@ package com.chernikaker.logic;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import static com.chernikaker.logic.Calculator.MAX_VALUE;
+import static com.chernikaker.logic.Calculator.MIN_VALUE;
+
 public class Counter {
 
-    private static final BigDecimal MAX_VALUE = new BigDecimal("1000000000000.000000");
-    private static final BigDecimal MIN_VALUE = new BigDecimal("-1000000000000.000000");
 
-
-    public BigDecimal add(BigDecimal a, BigDecimal b) {
-        if(a.compareTo(MAX_VALUE)>0 || a.compareTo(MIN_VALUE)<0) {
-            throw new IllegalArgumentException("Number 1 is out of range");
-        }
-
-        if(b.compareTo(MAX_VALUE)>0 || b.compareTo(MIN_VALUE)<0) {
-            throw new IllegalArgumentException("Number 2 is out of range");
-        }
+    public BigDecimal add(BigDecimal a, BigDecimal b, int op) {
         BigDecimal result = a.add(b);
+        result = result.setScale(10, RoundingMode.HALF_UP);
+        result = result.stripTrailingZeros();
         if(result.compareTo(MAX_VALUE)>0 || result.compareTo(MIN_VALUE)<0) {
-            throw new IllegalArgumentException("Result is out of range");
+            throw new IllegalArgumentException("Result of operation #"+op+" ="+result.toPlainString()+" (add) is out of range");
         }
         return result;
     }
 
-    public BigDecimal subtract(BigDecimal a, BigDecimal b) {
-        if(a.compareTo(MAX_VALUE)>0 || a.compareTo(MIN_VALUE)<0) {
-            throw new IllegalArgumentException("Number 1 is out of range");
-        }
+    public BigDecimal subtract(BigDecimal a, BigDecimal b, int  op) {
 
-        if(b.compareTo(MAX_VALUE)>0 || b.compareTo(MIN_VALUE)<0) {
-            throw new IllegalArgumentException("Number 2 is out of range");
-        }
         BigDecimal result = a.subtract(b);
+        result = result.setScale(10, RoundingMode.HALF_UP);
+        result = result.stripTrailingZeros();
         if(result.compareTo(MAX_VALUE)>0 || result.compareTo(MIN_VALUE)<0) {
-            throw new IllegalArgumentException("Result is out of range");
+            throw new IllegalArgumentException("Result of operation #"+op+" ="+result.toPlainString()+" (sub) is out of range");
         }
         return result;
     }
 
-    public BigDecimal multiply(BigDecimal a, BigDecimal b) {
-        if(a.compareTo(MAX_VALUE)>0 || a.compareTo(MIN_VALUE)<0) {
-            throw new IllegalArgumentException("Number 1 is out of range");
-        }
-
-        if(b.compareTo(MAX_VALUE)>0 || b.compareTo(MIN_VALUE)<0) {
-            throw new IllegalArgumentException("Number 2 is out of range");
-        }
+    public BigDecimal multiply(BigDecimal a, BigDecimal b, int op) {
         BigDecimal result = a.multiply(b);
+        result = result.setScale(10, RoundingMode.HALF_UP);
+        result = result.stripTrailingZeros();
         if(result.compareTo(MAX_VALUE)>0 || result.compareTo(MIN_VALUE)<0) {
-            throw new IllegalArgumentException("Result is out of range");
+            throw new IllegalArgumentException("Result of operation #"+op+" ="+result.toPlainString()+" (mult) is out of range");
         }
         return result;
     }
 
-    public BigDecimal divide(BigDecimal a, BigDecimal b) {
+    public BigDecimal divide(BigDecimal a, BigDecimal b, int op) {
         try {
-            if (a.compareTo(MAX_VALUE) > 0 || a.compareTo(MIN_VALUE) < 0) {
-                throw new IllegalArgumentException("Number 1 is out of range");
-            }
-
-            if (b.compareTo(MAX_VALUE) > 0 || b.compareTo(MIN_VALUE) < 0) {
-                throw new IllegalArgumentException("Number 2 is out of range");
-            }
-            BigDecimal result = a.divide(b, 6, RoundingMode.HALF_UP);
-            if (result.compareTo(MAX_VALUE) > 0 || result.compareTo(MIN_VALUE) < 0) {
-                throw new IllegalArgumentException("Result is out of range");
+            BigDecimal result = a.divide(b,10, RoundingMode.HALF_UP);
+            result = result.stripTrailingZeros();
+            if(result.compareTo(MAX_VALUE)>0 || result.compareTo(MIN_VALUE)<0) {
+                throw new IllegalArgumentException("Result of operation #"+op+" ="+result.toPlainString()+" (div) is out of range");
             }
             return result;
         } catch (ArithmeticException e) {

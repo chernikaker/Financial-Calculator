@@ -25,7 +25,7 @@ public class CalculatorUI {
         public CalculatorUI() {
             frame = new JFrame("Financial Calculator");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(950, 400);
+            frame.setSize(1000, 600);
             frame.setResizable(false);
             frame.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
@@ -129,20 +129,20 @@ public class CalculatorUI {
                         String operation = (String) operationBox.getSelectedItem();
                         BigDecimal result;
                         // Perform the selected operation
-                        if ("+".equals(operation)) {
-                            result = counter.add(n1,n2);
-                        } else if ("-".equals(operation))  {
-                            result = counter.subtract(n1,n2);
-                        }
-                        else if ("*".equals(operation))  {
-                            result = counter.multiply(n1,n2);
-                        }
-                        else {
-                            result = counter.divide(n1,n2);
-                        }
+//                        if ("+".equals(operation)) {
+//                            result = counter.add(n1,n2);
+//                        } else if ("-".equals(operation))  {
+//                            result = counter.subtract(n1,n2);
+//                        }
+//                        else if ("*".equals(operation))  {
+//                            result = counter.multiply(n1,n2);
+//                        }
+//                        else {
+//                            result = counter.divide(n1,n2);
+//                        }
 
                         // Display the result
-                        resultField.setText(p.toString(result));
+                      //  resultField.setText(p.toString(result));
                     }
                     catch (ArithmeticException ex){
                         JOptionPane.showMessageDialog(frame, ex.getMessage(), "Arithmetic Error", JOptionPane.ERROR_MESSAGE);

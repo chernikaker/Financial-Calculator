@@ -22,8 +22,7 @@ public class BigDecimalParser {
     }
 
     public String toString(BigDecimal num) {
-        num = num.setScale(6, RoundingMode.HALF_UP);
-        num = num.stripTrailingZeros();
+
         String numString = num.toPlainString();
         int pointIndex =  numString.indexOf(".")-3;
         int startIndex = pointIndex== -4 ? numString.length()-3 : pointIndex;

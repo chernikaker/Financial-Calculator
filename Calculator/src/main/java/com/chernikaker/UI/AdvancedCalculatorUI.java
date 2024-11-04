@@ -35,8 +35,8 @@ public class AdvancedCalculatorUI {
     public AdvancedCalculatorUI() {
         frame = new JFrame("Financial Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(950, 500);
-       // frame.setResizable(false);
+        frame.setSize(1300, 550);
+        frame.setResizable(false);
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -97,7 +97,7 @@ public class AdvancedCalculatorUI {
         operationBox2.setPreferredSize(new Dimension(50,40));
         operationBox3.setPreferredSize(new Dimension(50,40));
 
-        String[] rounding = {"Math", "Bank","Floor"};
+        String[] rounding = {"Math", "Bank","Truncation"};
         roundingComboBox = new JComboBox<>(rounding);
         styleComboBox(roundingComboBox);
         roundingComboBox.setPreferredSize(new Dimension(110,40));
@@ -220,9 +220,10 @@ public class AdvancedCalculatorUI {
                     <b>Allowed number formats</b>:
                     <br>1000.0  &nbsp;1000,0  &nbsp;1 000.0  &nbsp;1 000,0<br>
                     <b>WARNING:</b> no e-notation numbers<br><br>
-                     <b>Allowed range of inputs and result</b><br>
-                      [-1 000 000 000 000.000000; 1 000 000 000 000.000000]<br><br>
-                      <b>NOTE:</b> The result will be rounded to 6 decimal places, and trailing zeros will be removed.<br></div>
+                     <b>Allowed range of inputs and intermediate calculations</b><br>
+                      [-1 000 000 000 000.0000000000; 1 000 000 000 000.0000000000]<br><br>
+                      <b>NOTE:</b> Trailing zeros will be removed from the result.<br>
+                      Result of every calculation will be rounded up to 10 decimal places</div>
                       </html>""");
 
         labelInfo.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -270,8 +271,11 @@ public class AdvancedCalculatorUI {
                     operations.add((String) operationBox3.getSelectedItem());
 
                     BigDecimal result = Calculator.calculateExpression(nums, operations);
+                    String roundMethod = (String) roundingComboBox.getSelectedItem();
+                    BigDecimal roundedResult = Calculator.round(roundMethod, result);
                     // Display the result
                     resultField.setText(p.toString(result));
+                    roundingResultField.setText(p.toString(roundedResult));
                 }
                 catch (ArithmeticException ex){
                     JOptionPane.showMessageDialog(frame, ex.getMessage(), "Arithmetic Error", JOptionPane.ERROR_MESSAGE);
@@ -285,6 +289,18 @@ public class AdvancedCalculatorUI {
             }
         });
 
+        roundingComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Получаем выбранное значение
+                String selectedValue = (String) roundingComboBox.getSelectedItem();
+                String textResult = (String) resultField.getText().trim();
+                if(textResult.isEmpty()) return;
+                BigDecimal result = p.parse(textResult);
+                BigDecimal roundedResult = Calculator.round(selectedValue, result);
+                roundingResultField.setText(p.toString(roundedResult));
+            }
+        });
 
 
     }
