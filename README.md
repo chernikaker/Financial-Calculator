@@ -12,6 +12,7 @@ Supports operation priority.
 
 
 Rounds result with one of the following methods
+
 * Math rounding
 * Bank rounding (to the closest even)
 * Truncation
