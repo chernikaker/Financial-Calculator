@@ -12,6 +12,7 @@ Rounds result with one of the following methods
 * Math rounding
 * Bank rounding (to the closest even)
 * Truncation
+* 
 
 Supports various number formats, such as:
 * 1000000.000000
